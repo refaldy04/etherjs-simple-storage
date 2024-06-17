@@ -1,13 +1,12 @@
 import { ethers } from "ethers"
 import * as fs from "fs"
-import dotenv from "dotenv"
-dotenv.config()
+import "dotenv/config"
 
 async function main() {
-    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL)
+    const provider = new ethers.JsonRpcProvider(process.env.RPC_URL!)
 
     // 0xb04e2179d4ea59153fec9cc913141be45b66f2cfd7f63cb98376519494c36c48
-    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider)
+    const wallet = new ethers.Wallet(process.env.PRIVATE_KEY!, provider)
     // const encryptedJson = fs.readFileSync('./.encryptedKey.json', 'utf8');
 
     // let wallet = ethers.Wallet.fromEncryptedJsonSync(
@@ -26,8 +25,8 @@ async function main() {
 
     const contractFactory = new ethers.ContractFactory(abi, binary, wallet)
     console.log("Deploying, please wait...")
-    const contract = await contractFactory.deploy()
-    await contract.deploymentTransaction().wait(1)
+    const contract: any = await contractFactory.deploy()
+    await contract.deploymentTransaction()!.wait(1)
     const myContractDeployedAddress = await contract.getAddress()
     console.log(`Contract Address: ${myContractDeployedAddress}`)
 
